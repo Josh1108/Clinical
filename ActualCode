@@ -1,0 +1,467 @@
+
+#include<fstream.h>
+#include<string.h>
+#include<stdio.h>
+#include<conio.h>
+
+class Person
+
+{
+    char name [20];
+    char PhoneNo[20];
+    char email[30];
+    char prof[40];
+    char MedProb [50];
+    public:
+    void getdata();
+    void showdata();
+    int check1(char nm[]);
+    int check2(char pn[]);
+    int check3(char em[]);
+    int check4(char pr[]);
+    int check5(char mp[]);
+    void Edit();
+};
+
+//**************INPUT AN OBJECT***************
+
+void Person::getdata()
+{
+    cout<<"\n\nEnter name:";
+    gets(name);
+    cout<<"Enter phone no.:";
+   gets(PhoneNo);
+    cout<<"Enter email id:";
+    gets(email);
+    cout<<"Enter profession:";
+    gets(prof);
+    cout<<"Enter medical problem:";
+    gets(MedProb);
+}
+
+
+
+
+//*************DISPLAY AN OBJECT*******************
+
+void Person::showdata()
+{
+    cout<<"\n Name:"<<name<<endl;
+    cout<<"phone number:"<<PhoneNo<<endl;
+    cout<<"email id:"<<email<<endl;
+    cout<<"profession:"<<prof<<endl;
+    cout<<"medical problem:"<<MedProb<<endl;
+}
+
+//********************************** CHECK NAME FOR A PATIENT **********************
+
+
+int Person::check1(char nm[])
+{
+  if(strcmp(nm,name)==0)
+      return 1;
+    else
+        return 0;
+ }
+
+//*********************** CHECK TELEPHONE NUMBER OF PATIENT *************************
+
+int Person::check2(char pn[])
+{
+  if(strcmp(pn,PhoneNo)==0)
+      return 1;
+    else
+        return 0;
+ }
+
+
+
+//********************************** CHECK EMAIL ID OF PATIENT ****************************
+
+int Person::check3(char em[])
+{
+  if(strcmp(em,email)==0)
+      return 1;
+	 else
+		  return 0;
+ }
+
+
+
+
+//********************************** CHECK PROFESSION OF PATIENT ***************************
+int Person::check4(char pr[])
+{
+  if(strcmp(pr,prof)==0)
+      return 1;
+    else
+        return 0;
+ }
+
+//********************************** CHECK MEDICAL PROBLEM OF PATIENT *****************
+
+int Person::check5(char mp[])
+{
+  if(strcmp(mp,MedProb)==0)
+      return 1;
+	 else
+        return 0;
+ }
+
+//****************EDIT/MODIFY AN OBJECT************************
+
+void Person::Edit()
+{
+    char ch;
+    do{
+		  cout<<"Details of the Record:\n\n";
+        showdata();
+        cout<<"\n\n Press A if you want to change the name \n";
+        cout<<" Press B if you want to change the telephone Number \n";
+        cout<<" Press C if you want to change the Email ID \n";
+        cout<<"Press D if you want to change Medical Problem\n";
+        cout<<"Press E if you want to change the profession.\n";
+        cout<<" Press F if you want no more change \n";
+        cout<<" Enter your option: ";
+		  ch=getch();
+        switch(ch)
+        {
+            case 'A':
+            case 'a': cout<<"\n Enter new name:";
+                      gets(name);
+                      break;
+           case'B':
+           case'b': cout<<"\n Enter new telephone number :";
+	    gets(PhoneNo);
+              break;
+            case 'C':
+            case 'c': cout<<"\n Enter new email Id:";
+                gets(email);
+                break;
+            case'D':
+            case'd': cout<<"\n Enter new Medical Problem:";
+	    gets(MedProb);
+                break;
+            case'E':
+            case'e':cout<<"\n enter new Profession.";
+                   gets(prof);
+            case'F':
+            case'f':
+                break;
+                default : cout<<"\n Wrong option. Please Try again";
+
+        }
+    }
+    while (ch!='f'&& ch!='F');
+}
+
+
+//********************APPEND (ADD) A NEW RECORD**************************
+
+ void Append ()
+ {
+     Person P;
+     cout<<"\n Enter the details of the Record:\n";
+     P.getdata();
+     fstream f1;
+     f1.open("CLINIC.DAT",ios::binary|ios::app);
+     f1.write((char*)&P,sizeof(P));
+     f1.close();
+ }
+
+
+
+//***********************DISPLAY**********************
+
+void DisplayAll()
+{
+    Person P;
+  
+    fstream f1;
+    f1.open("CLINIC.DAT",ios::binary|ios::in);
+
+    while(f1.read((char*) &P, sizeof(P)))
+    {
+          P.showdata();
+    }
+    f1.close();
+}
+
+//**********************SEARCH BY NAME***********************
+
+void Search1()
+{
+    char snm[20];
+    Person P;
+    int Found=0;
+    
+    cout<<"\n\nEnter the name to be searched:";
+    gets(snm);
+    
+    fstream f1;
+	 f1.open("CLINIC.DAT",ios::binary|ios::in);
+    while(f1.read((char*) &P, sizeof(P)))
+    {
+         if(P.check1(snm)==1)
+         {
+            Found++;
+            P.showdata();
+         }
+    }
+	 f1.close();
+    if (Found==0)
+         cout<<"\n\n NO MATCH FOUND!!\n\n";
+        else
+         cout<<"\n\n TOTAL"<<Found<<"RECORD(S) FOUND!!\n\n";
+}
+//*****************************SEARCH BY PHONE NO.********************
+
+void Search2()
+{
+   char spn[20];
+    Person P;
+    int Found=0; 
+    cout<<"\n\nEnter the phone no. to be searched:";
+   gets(spn);
+    fstream f1;
+    f1.open("CLINIC.DAT",ios::binary|ios::in);
+
+    while(f1.read((char*) &P, sizeof(P)))
+    {
+         if(P.check2(spn)==1)
+         {
+            Found++;
+            P.showdata();
+         }
+    }
+	 f1.close();
+    if (Found==0)
+         cout<<"\n\n NO MATCH FOUND!! \n\n";
+        else
+         cout<<"\n\n TOTAL"<<Found<<"RECORD(S) FOUND!!\n\n";
+}
+
+//*************************************SEARCH BY EMAIL****************************
+
+void Search3()
+{
+	 char sem[30];
+    Person P;
+    int Found=0;
+
+    cout<<"\n\nEnter the email Id to be searched:";
+    gets(sem);
+    
+    fstream f1;
+    f1.open("CLINIC.DAT",ios::binary|ios::in);
+
+    while(f1.read((char*) &P, sizeof(P)))
+    {
+         if(P.check3(sem)==1)
+         {
+            Found++;
+            P.showdata();
+         }
+    }
+	 f1.close();
+    if (Found==0)
+         cout<<"\n\n NO MATCH FOUND!! \n\n";
+        else
+         cout<<"\n\n TOTAL"<<Found<<"RECORD(S) FOUND!!\n\n";
+}
+//************************SEARCH BY PROFESSION************************
+void Search4()
+{
+	 char spr[40];
+    Person P;
+    int Found=0;
+    
+    cout<<"\n\nEnter the profession to be searched:";
+    gets(spr);
+
+    fstream f1;
+    f1.open("CLINIC.DAT",ios::binary|ios::in);
+
+    while(f1.read((char*) &P, sizeof(P)))
+    {
+         if(P.check4(spr)==1)
+         {
+            Found++;
+            P.showdata();
+         }
+    }
+	 f1.close();
+    if (Found==0)
+         cout<<"\n\n NO MATCH FOUND!! \n\n";
+        else
+         cout<<"\n\n TOTAL"<<Found<<"RECORD(S) FOUND!!\n\n";
+}
+
+
+
+
+//************************SEARCH BY MEDICAL PROBLEM********************
+void Search5()
+{
+	 char smp[50];
+    Person P;
+    int Found=0;
+
+    cout<<"\n\nEnter the medical problem to be searched:";
+    gets(smp);
+    
+    fstream f1;
+	 f1.open("CLINIC.DAT",ios::binary|ios::in);
+
+    while(f1.read((char*) &P, sizeof(P)))
+    {
+         if(P.check5(smp)==1)
+         {
+            Found++;
+            P.showdata();
+			}
+    }
+    f1. close();
+    if(Found==0)
+        cout<<"\n\n NO MATCH FOUND!! \n\n";
+       else
+        cout<<"\n\n TOTAL"<<Found<<" RECORD(S) FOUND!!\n\n";
+}
+//********************EDIT/MODIFY A RECORD********************
+void modify()
+{
+    char sn[50];
+Person P;
+int Modified=0;
+cout<<"\n\nenter the name to be modified:";
+gets(sn);
+fstream f1,f2;
+f1.open ("CLINIC.DAT", ios::binary|ios::in);
+f2.open("TEMP.DAT", ios::binary|ios::out);
+
+ while(f1.read((char*)&P, sizeof(P)));
+		 {
+           if (P.check1(sn)==1)
+           {
+               Modified++;
+           P.Edit();
+           }
+           f2.write((char*)&P,sizeof(P));
+		 }
+       f1.close();
+       f2.close();
+
+       if (Modified==0)
+       cout<<"\n\n NO MATCH FOUND.|\n\n";
+		 else
+       {
+           remove("CLINIC.DAT");
+           rename("TEMP.DAT","CLINIC.DAT");
+       }
+
+
+}
+       
+//**********************DELETE A RECORD********************
+void Delete()
+{
+    char snm[20];
+    Person P;
+	 int Deleted=0;
+
+    cout<<"\n\nEnter the name to be deleted:";
+    gets(snm);
+    
+    fstream f1,f2;
+	 f1.open("CLINIC.DAT",ios::binary|ios::in);
+    f2.open("TEMP.DAT",ios::binary|ios::out);
+    
+    while(f1.read((char*) &P, sizeof(P)))
+    {
+			if(P.check1(snm)==1)
+
+            Deleted++;
+           else
+            f2.write((char*) &P, sizeof(P));
+
+    }
+    f1.close();
+    f2.close();
+    
+	 if(Deleted==0)
+       cout<<"\n\n NO MATCH FOUND!! \n\n";
+      else
+      {
+				remove("CLINIC.DAT");
+            rename("TEMP.DAT" , "CLINIC.DAT");
+      }
+}
+
+//*********************VOID MAIN**********************
+       void main()
+       {
+			  char choice;
+           do{
+               clrscr();
+               cout<<"Menu\n";
+			cout<<"Press 1 for APPEND a record\n";
+			cout<<"Press 2 for DISPLAY all records\n";
+			cout<<"Press 3 for SEARCH a name\n";
+			cout<<"Press 4 for SEARCH by Telephone number\n";
+			cout<<"Press 5 for SEARCH by Email ID\n";
+			cout<<"Press 6 for SEARCH by Profession\n";
+			cout<<"Press 7 for SEARCH by Medical Problem\n";
+			cout<<"Press 8 for Modify a Record\n";
+			cout<<"Press 9 for Delete a record\n";
+			cout<<"Press 0 for QUIT\n";
+			cout<<"Enter your choice:";
+			choice=getch();
+			switch(choice)
+			{
+				  case '1': Append ();
+				  break;
+				  case '2': DisplayAll();
+				  break;
+			             case '3': Search1();
+				  break;
+				  case '4': Search2();
+				  break;
+				  case '5': Search3();
+				  break;
+				  case '6': Search4();
+				   break;
+				   case '7': Search5();
+				   break;
+				   case '8': modify();
+				   break;
+				   case '9': Delete();
+	                                      break;
+				   case '0':
+				   break;
+				 default: cout<<"\n Wrong option has been selected\n\n";
+					}
+			  getch();
+			  }while(choice!='0');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                	  
